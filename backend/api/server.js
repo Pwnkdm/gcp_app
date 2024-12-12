@@ -6,8 +6,15 @@ const cors = require("cors");
 
 require("dotenv").config();
 
+const corsOptions = {
+  origin: "https://gcp-app-weff.vercel.app/",
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+};
+
 const app = express();
-app.use(cors());
+app.use(cors(corsOptions));
 
 const storage = new Storage({
   keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,

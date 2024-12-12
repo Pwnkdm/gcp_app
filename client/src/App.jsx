@@ -6,6 +6,8 @@ const App = () => {
   const [file, setFile] = useState(null);
   const [images, setImages] = useState([]);
 
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile && selectedFile.type.startsWith("image/")) {
@@ -26,7 +28,7 @@ const App = () => {
     formData.append("file", file);
 
     try {
-      await axios.post("UPLOAD_URL", formData, {
+      await axios.post(`${BASE_URL}/upload`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       alert("Image uploaded successfully!");
@@ -49,7 +51,7 @@ const App = () => {
 
   const fetchImages = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/metadata");
+      const response = await axios.get(`${BASE_URL}/metadata`);
       const updatedImages = await Promise.all(
         response.data.map(async (img) => {
           const { data } = await axios.get(
