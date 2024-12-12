@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { bytesToMB } from "./Helper/HelpFunc";
+import moment from "moment";
 
 const App = () => {
   const [file, setFile] = useState(null);
   const [images, setImages] = useState([]);
 
   const BASE_URL = "https://gcp-app-pearl.vercel.app";
+  // const BASE_URL = "http://localhost:8080";
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -49,6 +51,7 @@ const App = () => {
           return { ...img, url: data.url };
         })
       );
+
       setImages(updatedImages);
     } catch (error) {
       console.error("Error fetching metadata:", error);
@@ -118,6 +121,7 @@ const App = () => {
         >
           Upload
         </button>
+        {console.log(images, "images")}
 
         {images?.length && (
           <div className="mt-8">
@@ -131,21 +135,25 @@ const App = () => {
                   className="border rounded-lg p-4 bg-gray-50 shadow hover:shadow-lg transition duration-300"
                 >
                   <img
-                    src={img.url}
+                    src={img?.url}
                     alt={"img.filename"}
                     className="w-full h-40 object-cover rounded-lg mb-2"
                   />
                   <p className="text-sm text-gray-700">
                     <span className="font-semibold">Filename:</span>{" "}
-                    {img.filename}
+                    {img?.filename}
                   </p>
                   <p className="text-sm text-gray-700">
-                    <span className="font-semibold">Size:</span> {img.size}{" "}
+                    <span className="font-semibold">Size:</span> {img?.size}{" "}
                     bytes
                   </p>
+
                   <p className="text-sm text-gray-700">
                     <span className="font-semibold">Uploaded:</span>{" "}
-                    {new Date("img.upload_timestamp").toLocaleString()}
+                    {/* {new Date("img.upload_timestamp").toLocaleString()} */}
+                    {moment(img.upload_timestamp)
+                      .local()
+                      .format("MMMM Do YYYY, h:mm:ss a")}
                   </p>
                 </div>
               ))}
