@@ -7,7 +7,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const corsOptions = {
-  origin: "https://gcp-app-weff.vercel.app/",
+  origin: "https://gcp-app-weff.vercel.app",
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
