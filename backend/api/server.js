@@ -9,13 +9,16 @@ require("dotenv").config();
 const app = express();
 app.use(
   cors({
-    origin: "https://gcp-app-weff.vercel.app",
+    origin: "https://gcp-app-weff.vercel.app/",
     credentials: true,
   })
 );
 
+const serviceAccount = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+
+// Initialize the Google Cloud Storage client
 const storage = new Storage({
-  keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+  credentials: serviceAccount,
 });
 
 const PORT = process.env.PORT || 8080;
