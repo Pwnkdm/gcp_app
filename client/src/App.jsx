@@ -45,9 +45,7 @@ const App = () => {
       const response = await axios.get(`${BASE_URL}/metadata`);
       const updatedImages = await Promise.all(
         response.data.map(async (img) => {
-          const { data } = await axios.get(
-            `http://localhost:8080/file/${img.filename}`
-          );
+          const { data } = await axios.get(`${BASE_URL}/file/${img.filename}`);
           return { ...img, url: data.url };
         })
       );
