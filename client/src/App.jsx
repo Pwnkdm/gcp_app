@@ -40,15 +40,6 @@ const App = () => {
     }
   };
 
-  // const fetchImages = async () => {
-  //   try {
-  //     const response = await axios.get("http://localhost:8080/metadata");
-  //     setImages(response.data);
-  //   } catch (error) {
-  //     console.error("Error fetching metadata:", error);
-  //   }
-  // };
-
   const fetchImages = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/metadata`);
