@@ -3,33 +3,23 @@ const { Storage } = require("@google-cloud/storage");
 const fileUpload = require("express-fileupload");
 const mysql = require("mysql2");
 const cors = require("cors");
-const fs = require("fs");
+
 require("dotenv").config();
 
 const app = express();
-const PORT = process.env.PORT || 8080;
-const bucketName = "demo_bucket7";
-
-// Handle Base64-decoded credentials
-if (process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64) {
-  const decodedCredentials = Buffer.from(
-    process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64,
-    "base64"
-  ).toString("utf-8");
-  fs.writeFileSync("google-credentials.json", decodedCredentials);
-  process.env.GOOGLE_APPLICATION_CREDENTIALS = "google-credentials.json";
-}
-
-const storage = new Storage({
-  keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
-});
-
 app.use(
   cors({
     origin: "https://gcp-app-weff.vercel.app",
     credentials: true,
   })
 );
+
+const storage = new Storage({
+  keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+});
+
+const PORT = process.env.PORT || 8080;
+const bucketName = "demo_bucket7";
 
 app.use(fileUpload());
 
@@ -73,17 +63,14 @@ const db = mysql.createConnection({
 });
 
 db.connect((err) => {
-  if (err) {
-    console.error("Database connection failed:", err);
-    process.exit(1);
-  }
+  if (err) throw err;
   console.log("Database connected!");
 });
 
 // Route to get data from SQL DB
 app.get("/metadata", (req, res) => {
   db.query("SELECT * FROM uploads", (err, results) => {
-    if (err) return res.status(500).send({ error: err.message });
+    if (err) return res.status(500).send(err);
     res.json(results);
   });
 });
@@ -100,12 +87,11 @@ app.get("/file/:filename", async (req, res) => {
     });
     res.json({ url });
   } catch (error) {
-    console.error("Error generating signed URL:", error);
     res.status(500).send({ error: error.message });
   }
 });
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
+  console.log("Server started on port 8080");
 });
