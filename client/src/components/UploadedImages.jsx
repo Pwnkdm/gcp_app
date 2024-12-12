@@ -1,5 +1,6 @@
 import React from "react";
 import moment from "moment";
+import { bytesToMB } from "../Helper/HelpFunc";
 
 const UploadedImages = ({ images }) => {
   return (
@@ -23,7 +24,8 @@ const UploadedImages = ({ images }) => {
                 <span className="font-semibold">Filename:</span> {img.filename}
               </p>
               <p className="text-sm text-gray-700">
-                <span className="font-semibold">Size:</span> {img.size} bytes
+                <span className="font-semibold">Size:</span>{" "}
+                {bytesToMB(img.size)} MB
               </p>
               <p className="text-sm text-gray-700">
                 <span className="font-semibold">Uploaded:</span>{" "}
