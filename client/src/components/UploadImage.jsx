@@ -4,7 +4,8 @@ import { bytesToMB } from "../Helper/HelpFunc";
 
 const UploadImage = ({ fetchImages }) => {
   const [file, setFile] = useState(null);
-  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+  // const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+  const BASE_URL = "https://gcp-app-pearl.vercel.app";
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];

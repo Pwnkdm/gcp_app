@@ -7,7 +7,8 @@ import UploadedImages from "./components/UploadedImages";
 
 const App = () => {
   const [images, setImages] = useState([]);
-  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+  // const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+  const BASE_URL = "https://gcp-app-pearl.vercel.app";
 
   const fetchImages = async () => {
     try {
