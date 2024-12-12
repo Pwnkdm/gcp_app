@@ -9,7 +9,7 @@ require("dotenv").config();
 const app = express();
 app.use(
   cors({
-    origin: "https://gcp-app-weff.vercel.app",
+    origin: "*",
     credentials: true,
   })
 );
