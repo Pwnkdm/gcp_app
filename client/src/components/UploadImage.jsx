@@ -4,7 +4,6 @@ import { bytesToMB } from "../Helper/HelpFunc";
 
 const UploadImage = ({ fetchImages }) => {
   const [file, setFile] = useState(null);
-  // const BASE_URL = import.meta.env.VITE_BACKEND_URL;
   const BASE_URL = "https://gcp-app-pearl.vercel.app";
 
   const handleFileChange = (e) => {
@@ -27,7 +26,7 @@ const UploadImage = ({ fetchImages }) => {
     formData.append("file", file);
 
     try {
-      await axios.post(`${BASE_URL}/upload`, formData, {
+      await axios.post(`${BASE_URL}/api/upload`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       alert("Image uploaded successfully!");

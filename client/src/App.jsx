@@ -7,15 +7,16 @@ import UploadedImages from "./components/UploadedImages";
 
 const App = () => {
   const [images, setImages] = useState([]);
-  // const BASE_URL = import.meta.env.VITE_BACKEND_URL;
   const BASE_URL = "https://gcp-app-pearl.vercel.app";
 
   const fetchImages = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/metadata`);
+      const response = await axios.get(`${BASE_URL}/api/metadata`);
       const updatedImages = await Promise.all(
         response.data.map(async (img) => {
-          const { data } = await axios.get(`${BASE_URL}/file/${img.filename}`);
+          const { data } = await axios.get(
+            `${BASE_URL}/api/file/${img.filename}`
+          );
           return { ...img, url: data.url };
         })
       );

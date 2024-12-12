@@ -27,7 +27,7 @@ const bucketName = "demo_bucket7";
 app.use(fileUpload());
 
 // Route to handle file upload
-app.post("/upload", async (req, res) => {
+app.post("/api/upload", async (req, res) => {
   try {
     if (!req.files || !req.files.file) {
       return res.status(400).send({ message: "No file uploaded" });
@@ -71,7 +71,7 @@ db.connect((err) => {
 });
 
 // Route to get data from SQL DB
-app.get("/metadata", (req, res) => {
+app.get("/api/metadata", (req, res) => {
   db.query("SELECT * FROM uploads", (err, results) => {
     if (err) return res.status(500).send(err);
     res.json(results);
@@ -79,7 +79,7 @@ app.get("/metadata", (req, res) => {
 });
 
 // Route to get images from bucket
-app.get("/file/:filename", async (req, res) => {
+app.get("/api/file/:filename", async (req, res) => {
   try {
     const { filename } = req.params;
     const file = storage.bucket(bucketName).file(filename);
