@@ -37,7 +37,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<UploadImage fetchImages={fetchImages} />} />
           <Route
-            path="/uploaded-images"
+            path="/uploadedImages"
             element={<UploadedImages images={images} />}
           />
         </Routes>

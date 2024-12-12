@@ -10,7 +10,7 @@ const Navbar = () => {
           <Link to="/" className="hover:text-gray-300">
             Upload Image
           </Link>
-          <Link to="/uploaded-images" className="hover:text-gray-300">
+          <Link to="/uploadedImages" className="hover:text-gray-300">
             Uploaded Images
           </Link>
         </div>
