@@ -29,7 +29,7 @@ const UploadedImages = ({ images }) => {
               </p>
               <p className="text-sm text-gray-700">
                 <span className="font-semibold">Uploaded:</span>{" "}
-                {moment(img.upload_timestamp)
+                {moment(img.timestamp, moment.ISO_8601)
                   .local()
                   .format("MMMM Do YYYY, h:mm:ss a")}
               </p>
