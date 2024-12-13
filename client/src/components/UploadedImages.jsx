@@ -1,19 +1,38 @@
 import React from "react";
 import moment from "moment";
 import { bytesToMB } from "../Helper/HelpFunc";
+import deleteIcon from "../assets/delete.png";
+import axios from "axios";
 
-const UploadedImages = ({ images }) => {
+const UploadedImages = ({ images, setImages }) => {
+  const BASE_URL = "https://gcp-app-pearl.vercel.app";
+
+  const onDelete = async (filename) => {
+    try {
+      const response = await axios.delete(`${BASE_URL}/api/delete/${filename}`);
+      console.log("Delete response:", response.data);
+      alert(`File ${filename} deleted successfully!`);
+    } catch (error) {
+      console.error("Error deleting file:", error);
+      alert(`Failed to delete the file: ${filename}`);
+    }
+
+    setImages((prev) => prev.filter((file) => file.filename !== filename));
+  };
+
   return (
     <div className="max-w-4xl mx-auto bg-white p-6 sm:p-8 rounded-lg shadow-lg">
       <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">
         Uploaded Images
       </h1>
+      {console.log(images)}
+
       {images?.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {images.map((img) => (
             <div
               key={img.id}
-              className="border rounded-lg p-4 bg-gray-50 shadow hover:shadow-lg transition duration-300"
+              className="relative border rounded-lg p-4 bg-gray-50 shadow hover:shadow-lg transition duration-300"
             >
               <img
                 src={img.url}
@@ -33,6 +52,13 @@ const UploadedImages = ({ images }) => {
                   .local()
                   .format("MMMM Do YYYY, h:mm:ss a")}
               </p>
+              {/* Delete Icon */}
+              <img
+                src={deleteIcon}
+                alt="Delete"
+                className="absolute bottom-3 right-3 w-5 h-5 cursor-pointer hover:scale-110 transition-transform duration-200"
+                onClick={() => onDelete(img.filename)} // Add your delete handler here
+              />
             </div>
           ))}
         </div>

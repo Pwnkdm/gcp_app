@@ -25,6 +25,7 @@ const PORT = process.env.PORT || 8080;
 const bucketName = "demo_bucket7";
 
 app.use(fileUpload());
+app.use(express.json());
 
 // Route to handle file upload
 app.post("/api/upload", async (req, res) => {
@@ -91,6 +92,47 @@ app.get("/api/file/:filename", async (req, res) => {
     res.json({ url });
   } catch (error) {
     res.status(500).send({ error: error.message });
+  }
+});
+
+//  Route to delete  images from bucket & remove metadata from SQL
+app.delete("/api/delete/:filename", async (req, res) => {
+  const { filename } = req.params;
+
+  try {
+    // 1. Delete the file from the bucket
+    await storage.bucket(bucketName).file(filename).delete();
+    console.log(`File ${filename} deleted from bucket ${bucketName}`);
+
+    // 2. Delete the metadata from the database
+    db.query(
+      "DELETE FROM uploads WHERE filename = ?",
+      [filename],
+      (error, results) => {
+        if (error) {
+          console.error("Error deleting metadata:", error);
+          return res
+            .status(500)
+            .json({ message: "Error deleting metadata from database" });
+        }
+
+        if (results.affectedRows === 0) {
+          return res
+            .status(404)
+            .json({ message: "Metadata not found in the database" });
+        }
+
+        console.log(`Metadata for file ${filename} deleted from database`);
+        res
+          .status(200)
+          .json({
+            message: `File ${filename} and its metadata deleted successfully`,
+          });
+      }
+    );
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ message: "Error deleting file or metadata" });
   }
 });
 
